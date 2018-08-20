@@ -1,7 +1,8 @@
 {
   "variables": {
-    "centos7_iso_url": "http://mirror.math.princeton.edu/pub/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso",
-    "headless": "true"
+    "centos7_iso_url": "http://mirror.math.princeton.edu/pub/centos/7/isos/x86_64/CentOS-7-x86_64-NetInstall-1804.iso",
+    "headless": "true",
+    "version": "0.1.{{timestamp}}"
   },
   "provisioners": [
     {
@@ -48,6 +49,11 @@
       {
         "output": "builds/{{.Provider}}-subman-centos7.box",
         "type": "vagrant"
+      },
+      {
+        "type": "vagrant-cloud",
+        "box_tag": "candlepin/subscription-manager-centos7",
+        "version": "{{ user `version` }}"
       }
     ]
   ]
