@@ -1,0 +1,28 @@
+---
+- name: prepare image for vagrant
+  hosts: all
+  become: yes
+  tasks:
+    - name: install some basic packages
+      package:
+        name:
+          - git
+
+    - name: clone subscription-manager repo to /vagrant
+      git:
+        repo: 'https://github.com/candlepin/subscription-manager.git'
+        dest: /vagrant
+
+    - name: fix ownership on /vagrant
+      file:
+        path: /vagrant
+        owner: vagrant
+        group: vagrant
+        recurse: yes
+
+- hosts: all
+  vars:
+    subman_checkout_dir: '/vagrant'
+    subman_setup_hacking_environment: yes
+  roles:
+    - subman-devel

@@ -1,0 +1,54 @@
+{
+  "variables": {
+    "centos7_iso_url": "http://mirror.math.princeton.edu/pub/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso",
+    "headless": "true"
+  },
+  "provisioners": [
+    {
+      "type": "ansible",
+      "playbook_file": "./subman-vagrant.yml"
+    }
+  ],
+  "builders": [
+    {
+      "type": "qemu",
+      "iso_url": "{{ user `centos7_iso_url` }}",
+      "iso_checksum": "937bf0a7b0932817f84f7230f15ed88911bbbd85c0c958680792b7f8d8f9c1a9",
+      "iso_checksum_type": "sha256",
+      "output_directory": "output",
+      "shutdown_command": "sudo systemctl poweroff",
+      "disk_size": 40960,
+      "disk_image": false,
+      "format": "qcow2",
+      "headless": "{{ user `headless` }}",
+      "accelerator": "kvm",
+      "http_directory": "kickstarts",
+      "http_port_min": 10082,
+      "http_port_max": 10089,
+      "ssh_host_port_min": 2222,
+      "ssh_host_port_max": 2229,
+      "ssh_username": "vagrant",
+      "ssh_private_key_file": "keys/vagrant",
+      "ssh_port": 22,
+      "ssh_timeout": "10000s",
+      "vm_name": "centos7",
+      "net_device": "virtio-net",
+      "disk_interface": "virtio",
+      "boot_wait": "5s",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/centos7.ks<enter><wait>"
+      ],
+      "qemuargs": [
+        [ "-m", "1024M" ]
+      ]
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "output": "builds/{{.Provider}}-subman-centos7.box",
+        "type": "vagrant"
+      }
+    ]
+  ]
+}
