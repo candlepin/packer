@@ -11,6 +11,7 @@
     - name: clone subscription-manager repo to /vagrant
       git:
         repo: 'https://github.com/candlepin/subscription-manager.git'
+        version: khowell/setuptools_compat
         dest: /vagrant
 
     - name: fix ownership on /vagrant

@@ -8,12 +8,22 @@ The centos kickstarts are based on those used for official CentOS vagrant images
 Building the Images
 -------------------
 
-First you must install packer from packer.io and ansible.
+Prerequisites:
+
+ - Install packer from packer.io
+ - Install ansible
+ - Have a [vagrantcloud](https://app.vagrantup.com/) account that is linked to the [candlepin org](https://app.vagrantup.com/candlepin)
+ - Set the environment variable `VAGRANT_CLOUD_TOKEN` to a token for your vagrantcloud account
 
 ```bash
 ansible-galaxy install -r requirements.yml
 packer build -force subman-centos7.json  # or other json files in this repo.
 ```
+
+Notes:
+
+ - Since `packer` is a common binary name (binary with the same name provided by the cracklib-dist package), you may need to use the full path to `packer` or adjust your `PATH`.
+ - You can comment out the post-processor that uploads to vagrant-cloud if you just want to build the images locally.
 
 See also:
 
